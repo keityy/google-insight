@@ -1,24 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const app = express();
-const port = process.env.PORT || 3000;
-
-app.get('/', (req, res) => {
-  res.send('Hello World!');
-});
-
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
-});
-
-app.get('/auth', (req, res) => {
-    res.send('Authentication route');
-  });
-
-app.post('/import', (req, res) => {
-    res.send('Data import route');
-  });
-
+const port = process.env.PORT || 3001;
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const session = require('express-session');
@@ -31,15 +14,15 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 passport.use(new GoogleStrategy({
-    clientID: process.env.GOOGLE_CLIENT_ID,
-    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: "http://localhost:3000/auth/google/callback"
+  clientID: process.env.GOOGLE_CLIENT_ID,
+  clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+  callbackURL: "http://localhost:3001/auth/google/callback"
 },
 function(accessToken, refreshToken, profile, cb) {
-    // In this function, you'd handle the user's profile
-    // You could check if the user is in your database and create a user record if not
-    // For now, we'll just return the profile
-    return cb(null, profile);
+  // In this function, you'd handle the user's profile
+  // You could check if the user is in your database and create a user record if not
+  // For now, we'll just return the profile
+  return cb(null, profile);
 }
 ));
 
@@ -51,6 +34,14 @@ done(null, user);
 passport.deserializeUser(function(obj, done) {
 done(null, obj);
 });
+
+app.get('/', (req, res) => {
+  res.send('Hello World!');
+});
+
+app.get('/auth', (req, res) => {
+    res.send('Authentication route');
+  });
 
 //Create Authentication Routes:
 
@@ -66,5 +57,16 @@ app.get('/auth/google/callback',
     // Successful authentication, redirect home.
     res.redirect('/');
   });
+
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
+});
+
+
+app.post('/import', (req, res) => {
+    res.send('Data import route');
+  });
+
+
 
   
