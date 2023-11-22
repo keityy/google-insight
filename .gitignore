@@ -1,8 +1,9 @@
 # Environment variables
 .env
 
-# Node modules
+# Dependency directories
 node_modules/
+/client/node_modules/
 
 # Build directory
 dist/
@@ -18,3 +19,11 @@ logs/
 #temporary files
 *.tmp 
 *.temp
+
+# Production build directory
+/client/build/
+
+# Editors
+.vscode/
+.idea/
+*.sublime-workspace
